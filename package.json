@@ -1,0 +1,38 @@
+{
+  "name": "obsidian-journal-prev-next",
+  "version": "0.0.1",
+  "description": "Get a prev and a next link for your daily notes in Obsidian.",
+  "license": "ISC",
+  "author": "Simon Sedlatschek <code@sedlatschek.com>",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node esbuild.config.mts",
+    "lint": "eslint",
+    "build": "rimraf --glob dist/* && tsc -noEmit -skipLibCheck && node esbuild.config.mts production",
+    "test": "vitest run --config vitest.config.mts",
+    "version": "node version.mts && git add src/manifest.json versions.json"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@stylistic/eslint-plugin": "^5.4.0",
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^24.5.2",
+    "builtin-modules": "^5.0.0",
+    "dotenv": "^17.2.2",
+    "esbuild": "^0.25.10",
+    "esbuild-plugin-copy": "^2.1.1",
+    "eslint": "^9.36.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "^16.4.0",
+    "jiti": "^2.6.0",
+    "obsidian": "1.8.7",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.1",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "zod": "^4.3.5"
+  }
+}

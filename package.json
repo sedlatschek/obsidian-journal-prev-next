@@ -1,6 +1,6 @@
 {
   "name": "obsidian-journal-prev-next",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Get a prev and a next link for your daily notes in Obsidian.",
   "license": "ISC",
   "author": "Simon Sedlatschek <code@sedlatschek.com>",

@@ -2,6 +2,7 @@ import builtins from "builtin-modules";
 import type { Plugin } from "esbuild";
 import * as esbuild from "esbuild";
 import { copy } from "esbuild-plugin-copy";
+import esbuildSvelte from "esbuild-svelte";
 import { readFileSync } from "fs";
 import {
   mkdir,
@@ -10,6 +11,7 @@ import {
 } from "fs/promises";
 import { join } from "path";
 import process from "process";
+import { sveltePreprocess } from "svelte-preprocess";
 
 import envConfig from "./env.config.mts";
 
@@ -74,7 +76,13 @@ const options = {
   sourcemap: prod ? false : "inline",
   treeShaking: true,
   outdir: "./dist",
-  plugins: [...getDevPlugins()],
+  plugins: [
+    esbuildSvelte({
+      compilerOptions: { css: "injected" },
+      preprocess: sveltePreprocess(),
+    }),
+    ...getDevPlugins(),
+  ],
   loader: { ".json": "copy" },
 } satisfies esbuild.BuildOptions;
 

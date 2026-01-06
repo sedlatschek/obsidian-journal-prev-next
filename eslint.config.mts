@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import { defineConfig } from "eslint/config";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
+import svelte from "eslint-plugin-svelte";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -28,6 +29,7 @@ export default defineConfig([
     quotes: "double",
     semi: true,
   }),
+  ...svelte.configs.recommended,
   {
     rules: {
       "simple-import-sort/imports": "error",

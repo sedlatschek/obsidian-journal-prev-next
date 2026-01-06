@@ -12,10 +12,14 @@
     "isolatedModules": true,
     "types": ["node"],
     "strictNullChecks": true,
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "experimentalDecorators": true,
     "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
   },
-  "include": ["**/*.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.svelte"
+  ]
 }

@@ -18,7 +18,8 @@ import { JournalPrevNextError } from "./JournalPrevNextError";
 import {
   getDailyNotesSettings,
   JOURNAL_DIR,
-} from "./settings";
+  openOrCreateFile,
+} from "./utility";
 
 type Getter<T> = () => T;
 type Setter<T> = (value: T) => void;
@@ -177,26 +178,7 @@ export default class JournalNavPlugin extends Plugin {
     return getDailyNotesSettings(this.app).format;
   }
 
-  async openOrCreateFile(
-    path: string,
-    content = "",
-  ): Promise<TFile> {
-    const normalized = normalizePath(path);
-    const existing = this.app.vault.getAbstractFileByPath(normalized);
-
-    let file: TFile;
-    if (existing instanceof TFile) {
-      file = existing;
-    }
-    else {
-      const folderPath = normalized.split("/").slice(0, -1).join("/");
-      if (folderPath) {
-        await this.app.vault.createFolder(folderPath).catch(() => {});
-      }
-      file = await this.app.vault.create(normalized, content);
-    }
-
-    await this.app.workspace.getLeaf(false).openFile(file);
-    return file;
+  openOrCreateFile(path: string, content = ""): Promise<TFile> {
+    return openOrCreateFile(this.app, normalizePath(path), content);
   }
 }

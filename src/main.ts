@@ -32,6 +32,7 @@ type MountedApp = ReturnType<typeof mount>;
 export default class JournalNavPlugin extends Plugin {
   private leaf?: WorkspaceLeaf;
   private filePath?: string;
+  private syncScheduled = false;
 
   private readingApp: MountedApp | undefined;
   private hostReading: HTMLElement | undefined | null;
@@ -39,13 +40,11 @@ export default class JournalNavPlugin extends Plugin {
   private hostSource: HTMLElement | undefined | null;
 
   async onload() {
-    const rerender = () => this.sync();
+    const rerender = () => this.scheduleSync();
     this.registerEvent(this.app.workspace.on("active-leaf-change", rerender));
     this.registerEvent(this.app.workspace.on("file-open", rerender));
     this.registerEvent(this.app.workspace.on("layout-change", rerender));
-    this.sync();
-
-    getDailyNotesSettings(this.app);
+    this.scheduleSync();
   }
 
   onunload() {
@@ -54,6 +53,15 @@ export default class JournalNavPlugin extends Plugin {
 
   private isJournalFile(file: TFile | null | undefined): file is TFile {
     return !!file && file.path.startsWith(JOURNAL_DIR);
+  }
+
+  private scheduleSync() {
+    if (this.syncScheduled) return;
+    this.syncScheduled = true;
+    queueMicrotask(() => {
+      this.syncScheduled = false;
+      this.sync();
+    });
   }
 
   private sync() {

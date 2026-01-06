@@ -1,7 +1,8 @@
 <script lang="ts">
   import { moment } from "obsidian";
+
   import { JournalPrevNextError } from "./JournalPrevNextError";
-  import type JournalNavPlugin from "./main";
+  import JournalNavPlugin from "./main";
 
   export let plugin: JournalNavPlugin;
   export let filePath: string;

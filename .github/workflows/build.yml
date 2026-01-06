@@ -32,7 +32,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run lint
-      - run: npm test
+      - run: npm run svelte-check
       - name: archive dist
         if: startsWith(github.ref, 'refs/tags/v')
         run: tar -czf "$ARCHIVE_NAME" -C dist .

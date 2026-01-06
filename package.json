@@ -8,15 +8,14 @@
   "scripts": {
     "dev": "node esbuild.config.mts",
     "lint": "eslint",
+    "svelte-check": "svelte-check --tsconfig tsconfig.json",
     "build": "rimraf --glob dist/* && tsc -noEmit -skipLibCheck && node esbuild.config.mts production",
     "test": "vitest run --config vitest.config.mts",
-    "version": "node version.mts && git add src/manifest.json versions.json",
-    "svelte-check": "svelte-check --tsconfig tsconfig.json"
+    "version": "node version.mts && git add src/manifest.json versions.json"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@stylistic/eslint-plugin": "^5.4.0",
-    "@types/luxon": "^3.7.1",
     "@types/node": "^24.5.2",
     "builtin-modules": "^5.0.0",
     "dotenv": "^17.2.2",
@@ -33,6 +32,7 @@
     "rimraf": "^6.0.1",
     "svelte": "^5.46.1",
     "svelte-check": "^4.3.5",
+    "svelte-eslint-parser": "^1.4.1",
     "svelte-preprocess": "^6.0.3",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.44.1",

@@ -68,3 +68,9 @@ export async function openOrCreateFile(
   await app.workspace.getLeaf(false).openFile(file);
   return file;
 }
+
+export function normalizeFolderPath(input: string): string {
+  const p = normalizePath(input.trim());
+  const noLeading = p.replace(/^\/+/, "");
+  return noLeading.length > 0 && !noLeading.endsWith("/") ? `${noLeading}/` : noLeading;
+}

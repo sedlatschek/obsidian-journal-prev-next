@@ -13,11 +13,17 @@ import {
 } from "svelte";
 
 import { PLUGIN_NAME } from "./constants";
+import { JournalNavSettingTab } from "./JournalNavSettingTab";
 import JournalPrevNext from "./JournalPrevNext.svelte";
 import { JournalPrevNextError } from "./JournalPrevNextError";
+import type { JournalNavSettings } from "./settings";
+import {
+  DEFAULT_SETTINGS,
+  isJournalNavSettings,
+} from "./settings";
 import {
   getDailyNotesSettings,
-  JOURNAL_DIR,
+  normalizeFolderPath,
   openOrCreateFile,
 } from "./utility";
 
@@ -31,6 +37,8 @@ type Dynamic<T> = {
 type MountedApp = ReturnType<typeof mount>;
 
 export default class JournalNavPlugin extends Plugin {
+  public settings: JournalNavSettings = { ...DEFAULT_SETTINGS };
+
   private leaf?: WorkspaceLeaf;
   private filePath?: string;
   private syncScheduled = false;
@@ -41,6 +49,10 @@ export default class JournalNavPlugin extends Plugin {
   private hostSource: HTMLElement | undefined | null;
 
   async onload() {
+    await this.loadSettings();
+    this.settings.journalDir = normalizeFolderPath(this.settings.journalDir);
+    this.addSettingTab(new JournalNavSettingTab(this.app, this));
+
     const rerender = () => this.scheduleSync();
     this.registerEvent(this.app.workspace.on("active-leaf-change", rerender));
     this.registerEvent(this.app.workspace.on("file-open", rerender));
@@ -53,10 +65,10 @@ export default class JournalNavPlugin extends Plugin {
   }
 
   private isJournalFile(file: TFile | null | undefined): file is TFile {
-    return !!file && file.path.startsWith(JOURNAL_DIR);
+    return !!file && file.path.startsWith(this.settings.journalDir);
   }
 
-  private scheduleSync() {
+  public scheduleSync() {
     if (this.syncScheduled) {
       return;
     }
@@ -144,7 +156,7 @@ export default class JournalNavPlugin extends Plugin {
       props: {
         plugin: this,
         filePath: this.filePath,
-        journalDir: JOURNAL_DIR,
+        journalDir: this.settings.journalDir,
       },
     }));
   }
@@ -190,5 +202,19 @@ export default class JournalNavPlugin extends Plugin {
 
   openOrCreateFile(path: string, content = ""): Promise<TFile> {
     return openOrCreateFile(this.app, normalizePath(path), content);
+  }
+
+  async loadSettings(): Promise<void> {
+    const loaded = await this.loadData();
+    if (isJournalNavSettings(loaded)) {
+      this.settings = Object.assign({}, DEFAULT_SETTINGS, loaded);
+    }
+    else {
+      this.settings = { ...DEFAULT_SETTINGS };
+    }
+  }
+
+  async saveSettings(): Promise<void> {
+    await this.saveData(this.settings);
   }
 }

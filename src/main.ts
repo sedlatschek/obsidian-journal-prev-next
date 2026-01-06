@@ -206,11 +206,13 @@ export default class JournalNavPlugin extends Plugin {
 
   async loadSettings(): Promise<void> {
     const loaded = await this.loadData();
-    if (isJournalNavSettings(loaded)) {
-      this.settings = Object.assign({}, DEFAULT_SETTINGS, loaded);
+
+    if (!isJournalNavSettings(loaded)) {
+      console.warn(`${PLUGIN_NAME}: Loaded settings are invalid, resetting to defaults.`, loaded);
+      this.settings = { ...DEFAULT_SETTINGS };
     }
     else {
-      this.settings = { ...DEFAULT_SETTINGS };
+      this.settings = Object.assign({}, DEFAULT_SETTINGS, loaded);
     }
   }
 

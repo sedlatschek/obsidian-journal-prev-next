@@ -7,7 +7,8 @@ export const DEFAULT_SETTINGS: JournalNavSettings = {
 };
 
 export function isJournalNavSettings(value: unknown): value is JournalNavSettings {
-  return typeof value === "object" && value !== null
+  return typeof value === "object"
+    && value !== null
     && "journalDir" in value
-    && value.journalDir === "string";
+    && typeof value.journalDir === "string";
 }

@@ -1,5 +1,6 @@
 import {
-  readFile, writeFile,
+  readFile,
+  writeFile,
 } from "fs/promises";
 
 const VERSIONS_JSON_PATH = "./versions.json";

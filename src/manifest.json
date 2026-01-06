@@ -1,7 +1,7 @@
 {
   "id": "obsidian-prev-next-journal",
   "name": "Prev/Next Buttons",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "minAppVersion": "1.8.7",
   "description": "Get a prev and a next link for your daily notes in Obsidian.",
   "author": "Simon Sedlatschek",

@@ -57,7 +57,9 @@ export default class JournalNavPlugin extends Plugin {
   }
 
   private scheduleSync() {
-    if (this.syncScheduled) return;
+    if (this.syncScheduled) {
+      return;
+    }
     this.syncScheduled = true;
     queueMicrotask(() => {
       this.syncScheduled = false;
@@ -66,12 +68,18 @@ export default class JournalNavPlugin extends Plugin {
   }
 
   private sync() {
+    console.debug(`${PLUGIN_NAME}: Syncing JournalPrevNext Svelte components.`);
+
     const view = this.app.workspace.getActiveViewOfType(MarkdownView);
     const file = this.app.workspace.getActiveFile();
 
-    if (!view?.leaf || !this.isJournalFile(file)) {
+    if (!this.isJournalFile(file)) {
       this.teardown();
       return;
+    }
+
+    if (!view) {
+      throw new JournalPrevNextError("Active view is not a MarkdownView.");
     }
 
     const leafChanged = this.leaf !== view.leaf;
@@ -169,6 +177,8 @@ export default class JournalNavPlugin extends Plugin {
   }
 
   private teardown() {
+    console.debug(`${PLUGIN_NAME}: Tearing down JournalPrevNext plugin.`);
+
     this.teardownSvelte();
     this.leaf = undefined;
     this.filePath = undefined;
